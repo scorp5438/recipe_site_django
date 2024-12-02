@@ -1,0 +1,30 @@
+{% extends 'recipe/base.html' %}
+
+    {% block title %}
+        Сайт рецептов
+    {% endblock%}
+
+    {% block body %}
+        <div>
+            <p>Авторизован {{ user }}</p>
+        </div>
+        <h1>Список рецептов</h1>
+        <ol>
+            {% for recipe in object_list %}
+                <div>
+                    <li>
+                        <a href="{% url 'recipe:detail_recipe' pk=recipe.pk %}">{{ recipe.name }}</a>
+                        <ul>
+                            <br><li>{{ recipe.get_short_description }}</li>
+                            <li>Время приготовления: {{ recipe.time }}</li>
+                        </ul>
+                    </li>
+                </div><br>
+            {% empty %}
+                <p>Еще нет ни одного рецепта...</p>
+            {% endfor %}
+        </ol>
+
+        <a href="{% url 'recipe:create_recipe' %}">Добавить рецепт</a>
+
+    {% endblock%}

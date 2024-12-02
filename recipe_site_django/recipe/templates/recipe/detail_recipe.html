@@ -1,0 +1,35 @@
+{% extends 'recipe/base.html' %}
+
+    {% block title %}
+        Подробнее
+    {% endblock%}
+
+    {% block body %}
+        <div>
+            <h1>{{ object }}</h1>
+        <img src="{{ object.image.url }}" alt="{{ object.image.name }}">
+
+        <h3>Описание:</h3>
+        <p>{{ object.description }}</p>
+
+        <h3>Шаги приготовления:</h3>
+        <p>{{ object.steps }}</p>
+
+        <h3>Время приготовления:</h3>
+        <p>{{ object.time }}</p>
+
+        <h3>Автор рецепта:</h3>
+        <p>{{ object.author.username }}</p>
+
+        <h3>Ингридиенты:</h3>
+        <p>{{ object.ingredients }}</p>
+
+        <h3>Категория:</h3>
+        <p>{{ object.category }}</p>
+
+        <h3>Добавлен:</h3>
+        <p>{{ object.date_create }}</p>
+        </div>
+    <a href="{% url 'recipe:update_recipe' pk=object.pk %}">Изменить рецепт</a><br>
+    <a href="{% url 'recipe:recipe' %}">Назад к списку рецептов</a>
+    {% endblock %}
