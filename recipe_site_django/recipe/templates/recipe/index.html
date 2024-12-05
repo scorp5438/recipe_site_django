@@ -4,27 +4,37 @@
         Сайт рецептов
     {% endblock%}
 
-    {% block body %}
-        <div>
-            <p>Авторизован {{ user }}</p>
-        </div>
-        <h1>Список рецептов</h1>
-        <ol>
-            {% for recipe in object_list %}
-                <div>
-                    <li>
-                        <a href="{% url 'recipe:detail_recipe' pk=recipe.pk %}">{{ recipe.name }}</a>
-                        <ul>
-                            <br><li>{{ recipe.get_short_description }}</li>
-                            <li>Время приготовления: {{ recipe.time }}</li>
-                        </ul>
-                    </li>
-                </div><br>
-            {% empty %}
-                <p>Еще нет ни одного рецепта...</p>
-            {% endfor %}
-        </ol>
 
-        <a href="{% url 'recipe:create_recipe' %}">Добавить рецепт</a>
+    {% block body %}
+        <style>
+        .recipe_list {
+            margin-left: 20px;
+            margin-bottom: 20px;
+            }
+         </style>
+        <div class="recipe_list">
+            <h1>Список рецептов</h1>
+            <ol>
+                {% for recipe in object_list %}
+                    <div>
+                        <li>
+                            <a href="{% url 'recipe:detail_recipe' pk=recipe.pk %}">{{ recipe.name }}</a>
+                            <ul>
+                                <img style="width: 300px" src="{{ recipe.image.url }}" alt="{{ recipe.image.name }}">
+                                <li>{{ recipe.get_short_description }}</li>
+                                <li><p>Время приготовления: {{ recipe.time }}</p></li>
+                                <li><p>Автор рецепта: {{ recipe.author }}</p></li>
+                                <li><p>Категория: {{ recipe.category }}</p></li>
+                                <li><p>Дата добавления: {{ recipe.date_create }}</p></li>
+                            </ul>
+                        </li>
+                    </div><br>
+                {% empty %}
+                    <p>Еще нет ни одного рецепта...</p>
+                {% endfor %}
+            </ol>
+
+            <a href="{% url 'recipe:create_recipe' %}">Добавить рецепт</a>
+        </div>
 
     {% endblock%}
