@@ -29,6 +29,7 @@ SECRET_KEY = getenv('DJANGO_SECRET_KEY', 'django-insecure-^1)!8zg(fsqvagx--fdjns
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = getenv('DJANGO_DEBUG', '0') == '1'
+# DEBUG = True
 
 ALLOWED_HOSTS = [
                     '0.0.0.0',
