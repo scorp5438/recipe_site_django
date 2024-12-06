@@ -28,8 +28,8 @@ DATABASE_DIR.mkdir(exist_ok=True)
 SECRET_KEY = getenv('DJANGO_SECRET_KEY', 'django-insecure-^1)!8zg(fsqvagx--fdjnsmjxf!**jbuz+pzy+aneyi#d5tiw0')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = getenv('DJANGO_DEBUG', '0') == '1'
-DEBUG = True
+DEBUG = getenv('DJANGO_DEBUG', '0') == '1'
+# DEBUG = True
 
 ALLOWED_HOSTS = [
                     '0.0.0.0',
