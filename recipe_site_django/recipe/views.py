@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.views.generic import ListView, CreateView, DetailView, UpdateView
-from django.urls import reverse, reverse_lazy
-from .models import Recipe, Category
+from django.urls import reverse_lazy
+from .models import Recipe
 
 
 class RecipeView(ListView):

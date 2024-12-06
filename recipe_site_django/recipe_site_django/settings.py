@@ -10,23 +10,41 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import logging.config
+from os import getenv
 from pathlib import Path
 
 from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+DATABASE_DIR = BASE_DIR / 'database'
+DATABASE_DIR.mkdir(exist_ok=True)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-^1)!8zg(fsqvagx--fdjnsmjxf!**jbuz+pzy+aneyi#d5tiw0'
+SECRET_KEY = getenv('DJANGO_SECRET_KEY', 'django-insecure-^1)!8zg(fsqvagx--fdjnsmjxf!**jbuz+pzy+aneyi#d5tiw0')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = getenv('DJANGO_DEBUG', '0') == '1'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+                    '0.0.0.0',
+                    '127.0.0.1',
+                ] + getenv('DJANGO_ALLOWED_HOSTS', '').split(',')
+
+INTERNAL_IPS = [
+    '127.0.0.1'
+]
+
+if DEBUG:
+    import socket
+
+    hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+    INTERNAL_IPS.append('10.0.2.2')
+    INTERNAL_IPS.extend([ip[: ip.rfind('.')] + '.1' for ip in ips])
 
 # Application definition
 
@@ -78,7 +96,7 @@ WSGI_APPLICATION = 'recipe_site_django.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': DATABASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -126,3 +144,28 @@ MEDIA_ROOT = BASE_DIR / 'uploads'
 
 LOGIN_REDIRECT_URL = reverse_lazy('recipe:recipe')
 LOGIN_URL = reverse_lazy('accounts:login')
+
+LOGLEVEL = getenv('DJANGO_LOGLEVEL', 'info').upper()
+logging.config.dictConfig({
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        '': {
+            'level': LOGLEVEL,
+            'handlers': [
+                'console',
+            ],
+        },
+    },
+})

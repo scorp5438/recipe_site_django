@@ -20,7 +20,7 @@
                         <li>
                             <a href="{% url 'recipe:detail_recipe' pk=recipe.pk %}">{{ recipe.name }}</a>
                             <ul>
-                                <img style="width: 300px" src="{{ recipe.image.url }}" alt="{{ recipe.image.name }}">
+                                <br><img style="width: 300px" src="{{ recipe.image.url }}" alt="{{ recipe.image.name }}">
                                 <li>{{ recipe.get_short_description }}</li>
                                 <li><p>Время приготовления: {{ recipe.time }}</p></li>
                                 <li><p>Автор рецепта: {{ recipe.author }}</p></li>
