@@ -1,0 +1,28 @@
+services:
+  app:
+    build: .
+
+    command: gunicorn --bind 0.0.0.0:8000 recipe_site_django.wsgi:application
+
+
+    volumes:
+      - ./recipe_site_django/database:/app/database
+      - static_volume_recipe:/app/static
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health/" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8008:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - static_volume_recipe:/app/static
+    depends_on:
+      - app
+
+volumes:
+  static_volume_recipe:
