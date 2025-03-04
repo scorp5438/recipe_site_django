@@ -21,12 +21,14 @@ SECRET_KEY = getenv('DJANGO_SECRET_KEY', 'django-insecure-^1)!8zg(fsqvagx--fdjns
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = getenv('DJANGO_DEBUG', 'True').lower() == 'true'
 
-ALLOWED_HOSTS = [
-                    '0.0.0.0',
-                ] + getenv('DJANGO_ALLOWED_HOSTS', '').split(',')
+ALLOWED_HOSTS = ['*'] + getenv('DJANGO_ALLOWED_HOSTS', '').split(',')
 
 INTERNAL_IPS = [
     '127.0.0.1'
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:8008',
 ]
 
 # Application definition

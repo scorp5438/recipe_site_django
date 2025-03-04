@@ -5,7 +5,7 @@ from .models import Recipe
 
 
 class RecipeView(ListView):
-    queryset = Recipe.objects.order_by('?').select_related('category')[:5]
+    queryset = Recipe.objects.all().order_by('id').select_related('category')
     template_name = 'recipe/index.html'
 
 

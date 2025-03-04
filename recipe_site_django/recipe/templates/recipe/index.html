@@ -1,40 +1,76 @@
 {% extends 'recipe/base.html' %}
 
-    {% block title %}
-        Сайт рецептов
-    {% endblock%}
+{% block title %}
+    Сайт рецептов
+{% endblock %}
 
-
-    {% block body %}
-        <style>
-        .recipe_list {
-            margin-left: 20px;
+{% block body %}
+    <style>
+        .recipe-list {
+            margin: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .recipe-item {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
             margin-bottom: 20px;
-            }
-         </style>
-        <div class="recipe_list">
-            <h1>Список рецептов</h1>
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .recipe-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .recipe-item h2 {
+            margin-top: 0;
+        }
+        .recipe-item ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .recipe-item ul li {
+            margin: 10px 0;
+        }
+        .add-recipe-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .add-recipe-link:hover {
+            background: #0056b3;
+        }
+    </style>
+
+    <div class="recipe-list">
+        <h1>Список рецептов</h1>
+        {% if object_list %}
             <ol>
                 {% for recipe in object_list %}
-                    <div>
+                    <div class="recipe-item">
                         <li>
-                            <a href="{% url 'recipe:detail_recipe' pk=recipe.pk %}">{{ recipe.name }}</a>
+                            <h2><a href="{% url 'recipe:detail_recipe' pk=recipe.pk %}">{{ recipe.name }}</a></h2>
+                            <img src="{{ recipe.image.url }}" alt="{{ recipe.name }}">
                             <ul>
-                                <br><img style="width: 300px" src="{{ recipe.image.url }}" alt="{{ recipe.image.name }}">
-                                <li>{{ recipe.get_short_description }}</li>
-                                <li><p>Время приготовления: {{ recipe.time }}</p></li>
-                                <li><p>Автор рецепта: {{ recipe.author }}</p></li>
-                                <li><p>Категория: {{ recipe.category }}</p></li>
-                                <li><p>Дата добавления: {{ recipe.date_create }}</p></li>
+                                <li><strong>Описание:</strong> {{ recipe.get_short_description }}</li>
+                                <li><strong>Время приготовления:</strong> {{ recipe.time }}</li>
+                                <li><strong>Автор рецепта:</strong> {{ recipe.author }}</li>
+                                <li><strong>Категория:</strong> {{ recipe.category }}</li>
+                                <li><strong>Дата добавления:</strong> {{ recipe.date_create }}</li>
                             </ul>
                         </li>
-                    </div><br>
-                {% empty %}
-                    <p>Еще нет ни одного рецепта...</p>
+                    </div>
                 {% endfor %}
             </ol>
+        {% else %}
+            <p>Еще нет ни одного рецепта...</p>
+        {% endif %}
 
-            <a href="{% url 'recipe:create_recipe' %}">Добавить рецепт</a>
-        </div>
-
-    {% endblock%}
+        <a href="{% url 'recipe:create_recipe' %}" class="add-recipe-link">Добавить рецепт</a>
+    </div>
+{% endblock %}
